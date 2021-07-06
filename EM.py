@@ -11,7 +11,7 @@ np.random.seed(3)
 
 colors = ["#cccc00", "#006600", "m", "b", "r"]
 
-def EM(data, K, n_iter = 25, return_all_iterations=False):
+def EM(data, K, n_iter = 25, return_all_iterations=False): # K number of clusters
     N, M = data.shape # assume: N is number of data points, M is each data point's dimension
 
     sigma_def = 3
@@ -22,7 +22,7 @@ def EM(data, K, n_iter = 25, return_all_iterations=False):
         m[:, mm] = np.random.uniform(np.min(data[:,mm]), np.max(data[:,mm]), (K, ))
     Sigma = [sigma_def*np.eye(M) for kk in range(K)]
     gamma = 1/K*np.ones((N,K), dtype=np.int32)
-    p = 1/K*np.ones((K,))
+    p = 1/K*np.ones((K,)) #pi in pseudocode
     gamma_old = None
     
       
