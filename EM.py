@@ -44,7 +44,7 @@ def EM(data, K, n_iter = 25, return_all_iterations=False): # K number of cluster
     
     
     for it in range(n_iter):
-        # assignment step
+        # assignment step: E step
         for n in range(N):
             x = data[n, :]
             terms = np.array([p[k]*1/sqrt((2*pi)**M*np.linalg.det(Sigma[k])) * np.exp(-0.5*(x-m[k,:]) @ (np.linalg.inv(Sigma[k]) @ (x-m[k,:]))) for k in range(K)])
@@ -56,13 +56,13 @@ def EM(data, K, n_iter = 25, return_all_iterations=False): # K number of cluster
             gamma_history = np.append(gamma_history, [gamma], 0)
         
 
-        # update step
+        # update step: M step
         means = np.dot(gamma.T, data)
         Nk = [np.sum(gamma[:, k]) for k in range(K)]
         m_new = np.array([ means[k, :]/Nk[k] for k in range(K)])
         
         # if we haven't moved a lot, break the loop and stick with current clustering
-        if np.sum(np.sum((m-m_new)*(m-m_new))) < 10**-8:
+        if np.sum(np.sum((m-m_new)*(m-m_new))) < 10**-8: #stopping criterion TODO: alternative
             break
         
         m = m_new
